@@ -6,7 +6,7 @@
   <style data-exports-type="gwd-image" data-gwd-node="true">img[is=gwd-image].scaled-proportionally{background-repeat:no-repeat;background-position:center}</style>
   <style data-exports-type="gwd-pagedeck" data-gwd-node="true">.gwd-pagedeck{position:relative}.gwd-pagedeck>.gwd-page.transparent{opacity:0}.gwd-pagedeck>.gwd-page{position:absolute;top:0;left:0;-webkit-transition-property:-webkit-transform,opacity;-moz-transition-property:transform,opacity;transition-property:transform,opacity}.gwd-pagedeck>.gwd-page.linear{transition-timing-function:linear}.gwd-pagedeck>.gwd-page.ease-in{transition-timing-function:ease-in}.gwd-pagedeck>.gwd-page.ease-out{transition-timing-function:ease-out}.gwd-pagedeck>.gwd-page.ease{transition-timing-function:ease}.gwd-pagedeck>.gwd-page.ease-in-out{transition-timing-function:ease-in-out}</style>
   <meta name="generator" content="Google Web Designer 1.6.1.0726">
-  <meta data-template-name="gwd-Phone_portraitTemplate">
+  <meta data-template-name="gwd-responsive" data-template-version="1.0.0">
   <meta name="template" content="Interstitial 2.2.0">
   <meta name="environment" content="gwd-genericad">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -94,11 +94,11 @@ var x=function(a){for(var b=a.getAttribute("sources"),b=b?b.split(","):[],c;c=a.
       <div is="gwd-page" id="page1" class="gwd-page-wrapper gwd-page-size gwd-lightbox gwd-div-p0d3" data-gwd-width="100%" data-gwd-height="100%" centered="">
         <div class="gwd-page-content gwd-page-size gwd-div-1qre">
           <img class="gwd-img-f8h8 gwd-img-i867 gwd-img-oz92 gwd-img-19b6" is="gwd-image" source="https://loopme.me/html/GucciFW16/P_endcard.jpg" id="background-image" scaling="contain" style="display: none;">
-          <video is="gwd-video" id="gwd-video_1" sources="https://i.loopme.me/html/GucciFW16/P_video.mp4" class="gwd-video-00ef"></video>
+          <video is="gwd-video" id="gwd-video_1" sources="https://i.loopme.me/html/GucciFW16/P_video.mp4?cb=%%CACHEBUSTER%%" class="gwd-video-00ef"></video>
           <div class="gwd-div-csdu" id="get-more"></div>
           <div class="gwd-div-ljc1" id="video-click" style="display: none;"></div>
-          <img class="gwd-img-hko0 gwd-img-jowd gwd-img-yle6" is="gwd-image" source="https://i.loopme.me/html/GucciFW16/P_screenshot.jpg" id="screenshot-image" scaling="contain">
-          <loopme-base id="loopme-base_1" data-click-url="%%CLICK_URL%%" data-custom-event-name="P_GucciFW16" data-loopme-close-delay="3" class="gwd-loopme-base-1xho" data-loopme-close="" data-loading-page-url="Loading_image.png" data-loading-page-size="fullscreen" data-loading-page-url-portrait="https://i.loopme.me/html/GucciFW16/P_loading132.jpg&" data-loading-page-url-landscape="http://ioopme.me/html/GucciFW16/P_loading.jpg" data-loopme-loading-page=""></loopme-base>
+          <img class="gwd-img-hko0 gwd-img-jowd gwd-img-yle6" is="gwd-image" source="https://i.loopme.me/html/GucciFW16/P_scree nshot.jpg" id="screenshot-image" scaling="contain">
+          <loopme-base id="loopme-base_1" data-click-url="%%CLICK_URL%%" data-custom-event-name="P_GucciFW16" data-loopme-close-delay="3" class="gwd-loopme-base-1xho" data-loopme-close="" data-loading-page-url="Loading_image.png" data-loading-page-size="fullscreen" data-loading-page-url-portrait="https://i.loopme.me/html/GucciFW16/P_load%20ing132.jpg" data-loading-page-url-landscape="http://ioopme.me/html/GucciFW16/P_loading.jpg" data-loopme-loading-page=""></loopme-base>
         </div>
       </div>
     </div>

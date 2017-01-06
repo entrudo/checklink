@@ -14,9 +14,10 @@ public class ConsoleVersion /*extends JFrame*/ {
     //    static String nameFile = "";
     static Integer count = 0;
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[41m";
-    public static final String ANSI_GREEN = "\u001B[42m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BOLD = "\u001B[1m";
+
     public static void main(String[] args) throws IOException, InterruptedException {
         String content = "";
         if (args.length == 0 || args.length > 4){
@@ -41,7 +42,7 @@ public class ConsoleVersion /*extends JFrame*/ {
             try {
                 content = readFile(readArgs[i]);
                 System.out.println(ANSI_BOLD + "\n \nNow checking this file: " + readArgs[i] + "\n \n" + ANSI_RESET);
-                startCheck(content);
+                startCheck(readArgs[i], content);
             }catch (Exception e){
                 System.out.println(ANSI_BOLD + ANSI_RED + "Please check the file" + ANSI_RESET);
                 return;
@@ -75,32 +76,42 @@ public class ConsoleVersion /*extends JFrame*/ {
 //        System.out.println("\nFile was written the following folder \"New File\"");
     }
 
-    public static void startCheck(String content){
+    public static void startCheck(String fileName, String content) throws IOException{
 
         String regExp1 = "http://i.loopme.me";
         String regExp2 = "http://loopme.me";
         String regExp3 = "http://www.w3.org";
         String regExp4 = "[a-z]+:\\/\\/.*?[&?',\"]";
         String regExp5 = "http+:\\/\\/.*?\"";
+        String regExp6 = "data-version=\\\".....?\\\"";
+        String regExp7 = "data-template-name=\\\".*[a-z]\\\"";
+        String regExp8 = "data-template-version=\\\".*[0-9]\\\"";
+
+        writeVersionComponent(content, regExp6);
+        writeVersionOfTemplate(content, regExp7, regExp8);
+
         content = checkLinksILoopme(content,regExp1);
         content = checkLinksLoopme(content,regExp2);
         content = checkLinksW3(content, regExp3);
         checkOtherLinks(content, regExp5);
-        System.out.println("\n----------- >> CHECK ALL REFERENCES TO EFFICIENCY << -----------\n");
+
+        System.out.println(ANSI_BOLD + "\n----------- >> CHECK ALL REFERENCES TO EFFICIENCY << -----------\n" + ANSI_RESET);
         for (String s : getLinks(content, regExp4)){
             try {
                 checkURL(s);
             }catch (RuntimeException e){
-                System.out.println(ANSI_BOLD + ANSI_RED + "----------------->> ERROR <<----------------------" + ANSI_RESET);
+                //System.out.println(ANSI_BOLD + ANSI_RED + "----------------->> ERROR <<----------------------" + ANSI_RESET);
                 System.out.println("Something wrong with this link. Please check it: " + s + "\n");
                 count++;
             }
         }
+
         if (count == 0) {
             System.out.println(ANSI_BOLD + ANSI_GREEN + "There is everything ok. All links are valid." + ANSI_RESET);
         }
-//        writeFile(readArgs[0], content);
-        System.out.println("\nFile was written the following folder \"New File\"");
+
+        writeFile(fileName, content);
+        System.out.println(ANSI_BOLD + "\nFile was written the following folder \"New File\"" + ANSI_RESET);
     }
 
     public static void checkURL (String URL){
@@ -110,7 +121,7 @@ public class ConsoleVersion /*extends JFrame*/ {
         try {
             resp = client.execute(responce);
         } catch (Exception e){
-            System.out.println(ANSI_BOLD + ANSI_RED + "----------------->> ERROR <<----------------------" + ANSI_RESET);
+            //System.out.println(ANSI_BOLD + ANSI_RED + "----------------->> ERROR <<----------------------" + ANSI_RESET);
             System.out.println("Something wrong with this link. Please check it: " + URL + "\n");
             count++;
             return;
@@ -121,6 +132,11 @@ public class ConsoleVersion /*extends JFrame*/ {
             System.out.println("This links is not validation: " + responce.getURI() + " Code response of page is: " + Integer.toString(code) + ", Page is: "  + st + "\n");
             count++;
         }
+
+        if (URL.contains("%20")){
+            System.out.println("This links has invalid symbol, please check and delete incorrect symbol: " + URL + "\n");
+        }
+
     }
 
     public static void checkOtherLinks(String content, String regExp){
@@ -131,7 +147,7 @@ public class ConsoleVersion /*extends JFrame*/ {
             list.add(matcher.group().substring(0, matcher.group().length()-1));
         }
         if (list.size() > 0){
-            System.out.println("\nLink (s) ----> http:// other links <---- was detected! \n");
+            System.out.println(ANSI_BOLD + "\nLink (s) ----> http:// other links <---- was detected! \n" + ANSI_RESET);
         }
 
         for (String s : list){
@@ -142,6 +158,9 @@ public class ConsoleVersion /*extends JFrame*/ {
     public static String checkLinksW3(String content, String regExp){
         if (content.indexOf("dropbox") > 0){
             System.err.println("\n\nPLEASE CHECK ASSETS!!!  THERE IS DROPBOX LINKS!!!!\n\n");
+        }
+        if (content.indexOf("CACHEBUSTER") > 0){
+            System.err.println("\n\nPLEASE CHECK ASSETS!!!  THERE IS CACHEBUSTER IN LINKS!!!!\n\n");
         }
         Pattern pattern = Pattern.compile(regExp);
         Matcher matcher = pattern.matcher(content);
@@ -157,7 +176,7 @@ public class ConsoleVersion /*extends JFrame*/ {
     public static String checkLinksLoopme(String content, String regExp){
         Pattern pattern = Pattern.compile(regExp);
         Matcher matcher = pattern.matcher(content);
-        System.out.println("\nCHEKING loopme.me LINKS...\n");
+        System.out.println(ANSI_BOLD + "\nCHEKING loopme.me LINKS...\n" + ANSI_RESET);
         String tmp = "https://loopme.me";
         if (matcher.find() == false){
             System.out.println(ANSI_BOLD + ANSI_GREEN + "There is everything ok. All loopme.me links are https://" + ANSI_RESET);
@@ -171,7 +190,7 @@ public class ConsoleVersion /*extends JFrame*/ {
     public static String checkLinksILoopme(String content, String regExp){
         Pattern pattern = Pattern.compile(regExp);
         Matcher matcher = pattern.matcher(content);
-        System.out.println("\nCHEKING i.loopme.me LINKS...\n");
+        System.out.println(ANSI_BOLD + "\nCHEKING i.loopme.me LINKS...\n" + ANSI_RESET);
         String tmp = "https://i.loopme.me";
         if (matcher.find() == false){
             System.out.println(ANSI_BOLD + ANSI_GREEN + "There is everything ok. All i.loopme.me links are https://" + ANSI_RESET);
@@ -219,6 +238,24 @@ public class ConsoleVersion /*extends JFrame*/ {
         print.close();
     }
 
+    public static void writeVersionComponent(String content, String regExp){
+        Pattern pattern = Pattern.compile(regExp);
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find() == true) {
+            System.out.println(ANSI_BOLD + "Version of LoopMe Base component: " + ANSI_RESET + matcher.group().substring(14, matcher.group().length()-1) + "\n");
+        }
+    }
+
+    public static void writeVersionOfTemplate(String content, String regExp, String regExp2){
+        Pattern pattern = Pattern.compile(regExp);
+        Pattern pattern2 = Pattern.compile(regExp2);
+        Matcher matcher = pattern.matcher(content);
+        Matcher matcher2 = pattern2.matcher(content);
+
+        if (matcher.find() == true && matcher2.find() == true) {
+            System.out.println(ANSI_BOLD + "Version of LoopMe GWD templates: " + ANSI_RESET + matcher.group().substring(20, matcher.group().length()-1) + " " + matcher2.group().substring(23, matcher2.group().length() - 1));
+        }
+    }
 //    public static String MyFrame() throws IOException {
 //        JFileChooser fc = new JFileChooser();
 //        String content = "";
