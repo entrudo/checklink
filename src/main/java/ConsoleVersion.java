@@ -96,6 +96,7 @@ public class ConsoleVersion {
         content = checkLinksLoopme(content, regExp2);
         content = checkLinksW3(content, regExp3);
         checkOtherLinks(content, regExp5);
+        content = changeCommentLinks(content);
 
         System.out.println(ANSI_BOLD + "\n----------- >> CHECK SIZE OF FILE << -----------\n" +
                 ANSI_RESET);
@@ -117,6 +118,13 @@ public class ConsoleVersion {
 
         writeFile(fileName, content);
         System.out.println(ANSI_BOLD + "\nFile was written the following folder \"New File\"" + ANSI_RESET);
+    }
+
+    public static String changeCommentLinks(String content) {
+        String link = "http://polymer";
+        String replaceLink = "https://polymer";
+
+        return content.replaceAll(link, replaceLink);
     }
 
     public static void checkURL(String URL) {
