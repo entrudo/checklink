@@ -82,8 +82,8 @@ public class ConsoleVersion {
         String regExp1 = "http://i.loopme.me";
         String regExp2 = "http://loopme.me";
         String regExp3 = "http://www.w3.org";
-        String regExp4 = "[a-z]+:\\/\\/.*?[&?',\"]";
-        String regExp5 = "http+:\\/\\/.*?\"";
+        String regExp4 = "[a-z]+:\\/\\/.*?[&?',\")]";
+        String regExp5 = "http+:\\/\\/.*?['&?\")]";
         String regExp6 = "data-version=\\\".....?\\\"";
         String regExp7 = "data-template-name=\\\".*[a-z]\\\"";
         String regExp8 = "data-template-version=\\\".*[0-9]\\\"";
