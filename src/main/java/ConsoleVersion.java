@@ -84,7 +84,7 @@ public class ConsoleVersion {
         String regExp3 = "http://www.w3.org";
         String regExp4 = "[a-z]+:\\/\\/.*?[&?',\")]";
         String regExp5 = "http+:\\/\\/.*?['&?\")]";
-        String regExp6 = "data-version=\\\".....?\\\"";
+        String regExp6 = "data-version=\\\"......?\\\"";
         String regExp7 = "data-template-name=\\\".*[a-z]\\\"";
         String regExp8 = "data-template-version=\\\".*[0-9]\\\"";
         String regExp9 = "image-player-component.min.js. data-version=\".*?\"";
@@ -104,6 +104,15 @@ public class ConsoleVersion {
 
         System.out.println(ANSI_BOLD + "\n----------- >> CHECK ALL REFERENCES TO EFFICIENCY << -----------\n" + ANSI_RESET);
         for (String s : getLinks(content, regExp4)) {
+            try {
+                checkURL(s);
+            } catch (RuntimeException e) {
+                System.out.println("Something wrong with this link. Please check it: " + s + "\n");
+                count++;
+            }
+        }
+
+        for (String s : getLinksFromOwnCreatives(content)) {
             try {
                 checkURL(s);
             } catch (RuntimeException e) {
@@ -138,6 +147,7 @@ public class ConsoleVersion {
             count++;
             return;
         }
+
         int code = resp.getStatusLine().getStatusCode();
         String st = resp.getStatusLine().getReasonPhrase();
         if (code != 200) {
@@ -301,5 +311,32 @@ public class ConsoleVersion {
                         + String.format("%.2f", sizeFile) + "kb");
             }
         }
+    }
+
+    public static List<String> getLinksFromOwnCreatives(String content) {
+        String rootPath = null;
+        String[] arrayImages = null;
+        Pattern pattern = Pattern.compile("rootPath = '(.*?\\')");
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            rootPath = matcher.group().substring(12, matcher.group().length() - 1);
+        }
+
+
+        Pattern patternArray = Pattern.compile("imagesArray = .*?\\]");
+        Matcher matcherArray = patternArray.matcher(content);
+
+        while (matcherArray.find()) {
+            arrayImages = matcherArray.group().substring(16, matcherArray.group().length()
+                    -1).replaceAll("'", "").replaceAll(",", "").split(" ");
+        }
+
+        List<String> linksList = new ArrayList<String>();
+
+        for (String str : arrayImages) {
+            linksList.add(rootPath+str);
+        }
+
+        return linksList;
     }
 }
